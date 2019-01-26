@@ -14,11 +14,8 @@ object ProjectPlugin extends AutoPlugin {
       val scalatest   = "3.0.5"
     }
 
-    lazy val sharedSettings: Seq[Def.Setting[_]] = Seq(
-
-    )
-
     lazy val settings: Seq[Def.Setting[_]] = Seq(
+      name := "$name$",
       libraryDependencies ++= Seq(
         "ch.qos.logback" % "logback-classic" % V.logback,
         "com.typesafe"   % "config"          % V.config,

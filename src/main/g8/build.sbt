@@ -6,6 +6,4 @@ ThisBuild / organizationName := "$organization$"
 
   lazy val root = project
   .in(file("."))
-  .settings(
-    name := """$name;format="normalize"$"""
-  )
+  .settings(settings)
