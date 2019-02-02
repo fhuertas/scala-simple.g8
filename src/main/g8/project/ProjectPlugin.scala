@@ -8,20 +8,20 @@ object ProjectPlugin extends AutoPlugin {
   object autoImport {
 
     lazy val V = new {
-      val config          = "1.3.3"
-      val logback         = "1.2.3"
-      val log4s           = "1.6.1"
-      val scalaCheck      = "1.14.0"
-      val scalaTest       = "3.0.5"
+      val config     = "1.3.3"
+      val logback    = "1.2.3"
+      val log4s      = "1.6.1"
+      val scalaCheck = "1.14.0"
+      val scalaTest  = "3.0.5"
     }
 
     lazy val settings: Seq[Def.Setting[_]] = Seq(
-      name := "generators",
+      name := "$name$",
       libraryDependencies ++= Seq(
         "ch.qos.logback"         % "logback-classic"     % V.logback,
         "com.typesafe"           % "config"              % V.config,
         "org.log4s"              %% "log4s"              % V.log4s,
-        "org.scalacheck"         %% "scalacheck"         % V.scalaCheck,
+        "org.scalacheck"         %% "scalacheck"         % V.scalaCheck % Test,
         "org.scalatest"          %% "scalatest"          % V.scalaTest % Test,
       ),
       scalacOptions := Seq(
