@@ -1,24 +1,13 @@
-package com.fhuertas.uah.angdv.gen.config
+package $package$.config
 
-import com.typesafe.config.ConfigException.Missing
-import com.typesafe.config.ConfigFactory
-import org.scalatest.{ FlatSpec, Matchers }
+import com.typesafe.config.Config
 
-class ConfigLoaderSpec extends FlatSpec with Matchers {
-  "KafkaConfig" should "be extracted correctly" in {
-    val config = ConfigFactory.load()
-    val result = ConfigLoader.loadAsMap(config, Some("this.is.a.valid.path"))
-    result shouldBe Map(
-      "key1"         → "this is a value",
-      "key2"         → "223",
-      "key3.subKey1" → "aaaa",
-      "key3.subKey3" → "unuadnfasd"
-    )
-  }
+object ConfigLoader {
 
-  "KafkaConfig" should "thrown an exception if not exists" in {
-    val config = ConfigFactory.load()
-    a[Missing] shouldBe thrownBy(ConfigLoader.loadAsMap(config, Some("this.is.a.invalid.path")))
+  def loadAsMap(config: Config, ns: Option[String] = None): Map[String, String] = {
+    import scala.collection.JavaConverters._
+    val configExtracted = ns.map(config.getConfig).getOrElse(config).entrySet().asScala
+    configExtracted.map(entry ⇒ entry.getKey → entry.getValue.unwrapped().toString).toMap
   }
 
 }

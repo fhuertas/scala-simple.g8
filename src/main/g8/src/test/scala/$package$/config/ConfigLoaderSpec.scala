@@ -1,20 +1,24 @@
-package $package$
-package config
+package $package$.config
 
-import org.scalatest.{Matchers, WordSpecLike}
+import com.typesafe.config.ConfigException.Missing
+import com.typesafe.config.ConfigFactory
+import org.scalatest.{ FlatSpec, Matchers }
 
-final class CommonSettingsSpec extends WordSpecLike with Matchers {
-
-  "name" should {
-    "be equal to $name;format="normalize"$" in {
-      CommonSettings.name shouldEqual "$name;format="normalize"$"
-    }
+class ConfigLoaderSpec extends FlatSpec with Matchers {
+  "KafkaConfig" should "be extracted correctly" in {
+    val config = ConfigFactory.load()
+    val result = ConfigLoader.loadAsMap(config, Some("this.is.a.valid.path"))
+    result shouldBe Map(
+      "key1"         → "this is a value",
+      "key2"         → "223",
+      "key3.subKey1" → "aaaa",
+      "key3.subKey3" → "unuadnfasd"
+    )
   }
 
-  "log file name" should {
-    "be equal to name" in {
-      CommonSettings.logName shouldEqual CommonSettings.name
-    }
+  "KafkaConfig" should "thrown an exception if not exists" in {
+    val config = ConfigFactory.load()
+    a[Missing] shouldBe thrownBy(ConfigLoader.loadAsMap(config, Some("this.is.a.invalid.path")))
   }
 
 }
